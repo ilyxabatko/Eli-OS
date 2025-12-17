@@ -4,15 +4,23 @@ version = "0.1.0"
 edition = "2024"
 authors = ["Elijah elijahbrnv@gmail.com"]
 
+[package.metadata.bootimage]
+# enabling QEMU exiting (appending "test-args" to QEMU commands through "bootimage runner")
+# by specifying the I/O port so the device can be reached from the kernel
+test-args = ["-device", "isa-debug-exit,iobase=0xf4,iosize=0x04", "-serial", "stdio", "-display", "none"]
+test-success-exit-code = 33 # (0x10 << 1) | 1  - this is how QEMU calculates exit code
+
 [dependencies]
 bootloader = "0.9"
 volatile = "0.2.6"
 lazy_static = { version = "1.0", features = ["spin_no_std"] }
 spin = "0.5.2"
+x86_64 = "0.14.2"
+uart_16550 = "0.2.0"
 
 [[bin]]
 name = "eli_os"
-test = false
+test = true
 bench = false
 
 [profile.dev]
