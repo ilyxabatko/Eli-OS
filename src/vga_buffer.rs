@@ -3,6 +3,8 @@ use lazy_static::lazy_static;
 use spin::Mutex;
 use volatile::Volatile;
 
+use crate::println;
+
 const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
 
@@ -135,5 +137,28 @@ impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
         self.write_string(s);
         Ok(())
+    }
+}
+
+#[test_case]
+fn test_println_simple() {
+    println!("test_println_simple output");
+}
+
+#[test_case]
+fn test_println_many() {
+    for i in 0..150 {
+        println!("test_println_many [{i}] output");
+    }
+}
+
+#[test_case]
+fn test_println_output() {
+    let s = "Some test string that fits on a single line";
+    println!("{s}");
+
+    for (i, char) in s.chars().enumerate() {
+        let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
+        assert_eq!(char::from(screen_char.ascii_character), char);
     }
 }

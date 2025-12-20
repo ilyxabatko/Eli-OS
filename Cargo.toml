@@ -9,6 +9,7 @@ authors = ["Elijah elijahbrnv@gmail.com"]
 # by specifying the I/O port so the device can be reached from the kernel
 test-args = ["-device", "isa-debug-exit,iobase=0xf4,iosize=0x04", "-serial", "stdio", "-display", "none"]
 test-success-exit-code = 33 # (0x10 << 1) | 1  - this is how QEMU calculates exit code
+test-timeout = 120 # (seconds) test timeout so "cargo test" isn't blocked forever in case
 
 [dependencies]
 bootloader = "0.9"
@@ -28,3 +29,7 @@ panic = "abort"
 
 [profile.release]
 panic = "abort"
+
+[[test]]
+name = "should_panic"
+harness = false
