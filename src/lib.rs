@@ -8,8 +8,7 @@
 #[cfg(test)]
 use core::panic::PanicInfo;
 
-use crate::interrupts::init_idt;
-
+pub mod gdt;
 pub mod interrupts;
 pub mod macros;
 pub mod qemu_utils;
@@ -34,5 +33,6 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 pub fn init() {
-    init_idt();
+    gdt::init();
+    interrupts::init_idt();
 }

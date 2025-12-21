@@ -16,6 +16,11 @@ pub extern "C" fn _start() -> ! {
 
     eli_os::init();
 
+    fn stack_overflow() {
+        stack_overflow();
+    };
+    stack_overflow();
+
     #[cfg(test)] // this function is only generated in "test" condition
     test_main();
 
