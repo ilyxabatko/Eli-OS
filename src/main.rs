@@ -14,6 +14,8 @@ use eli_os::println;
 pub extern "C" fn _start() -> ! {
     println!("Hello, {}", "Eli!");
 
+    eli_os::init();
+
     #[cfg(test)] // this function is only generated in "test" condition
     test_main();
 
