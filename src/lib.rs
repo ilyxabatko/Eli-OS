@@ -21,7 +21,7 @@ pub mod vga_buffer;
 pub extern "C" fn _start() -> ! {
     init();
     test_main();
-    loop {}
+    halt_loop()
 }
 
 #[cfg(test)]
@@ -35,4 +35,14 @@ fn panic(info: &PanicInfo) -> ! {
 pub fn init() {
     gdt::init();
     interrupts::init_idt();
+    unsafe {
+        interrupts::PICS.lock().initialize();
+    };
+    x86_64::instructions::interrupts::enable();
+}
+
+pub fn halt_loop() -> ! {
+    loop {
+        x86_64::instructions::hlt();
+    }
 }

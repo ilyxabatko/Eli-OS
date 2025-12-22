@@ -4,6 +4,7 @@
 
 use core::panic::PanicInfo;
 use eli_os::{
+    halt_loop,
     qemu_utils::{QemuExitCode, exit_qemu},
     serial_print, serial_println,
 };
@@ -46,7 +47,7 @@ extern "x86-interrupt" fn test_double_fault_handler(
     serial_println!("[ok]");
     exit_qemu(QemuExitCode::Success);
 
-    loop {}
+    halt_loop()
 }
 
 #[panic_handler]

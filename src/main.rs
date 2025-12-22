@@ -8,7 +8,7 @@
 #![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo;
-use eli_os::println;
+use eli_os::{halt_loop, println};
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
@@ -16,22 +16,17 @@ pub extern "C" fn _start() -> ! {
 
     eli_os::init();
 
-    fn stack_overflow() {
-        stack_overflow();
-    };
-    stack_overflow();
-
     #[cfg(test)] // this function is only generated in "test" condition
     test_main();
 
-    loop {}
+    halt_loop()
 }
 
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", &info);
-    loop {}
+    halt_loop()
 }
 
 #[cfg(test)]
