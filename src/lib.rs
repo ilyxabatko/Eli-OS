@@ -8,17 +8,24 @@
 #[cfg(test)]
 use core::panic::PanicInfo;
 
+#[cfg(test)]
+use bootloader::{BootInfo, entry_point};
+
 pub mod gdt;
 pub mod interrupts;
 pub mod macros;
+pub mod memory;
 pub mod qemu_utils;
 pub mod serial_port;
 pub mod testable;
 pub mod vga_buffer;
 
+// Defines a type-checked entrypoint for our kernel
 #[cfg(test)]
-#[unsafe(no_mangle)]
-pub extern "C" fn _start() -> ! {
+entry_point!(test_kernel_main);
+
+#[cfg(test)]
+fn test_kernel_main(_boot_info: &'static BootInfo) -> ! {
     init();
     test_main();
     halt_loop()
