@@ -11,6 +11,7 @@ use core::panic::PanicInfo;
 #[cfg(test)]
 use bootloader::{BootInfo, entry_point};
 
+pub mod allocator;
 pub mod gdt;
 pub mod interrupts;
 pub mod macros;
@@ -19,6 +20,8 @@ pub mod qemu_utils;
 pub mod serial_port;
 pub mod testable;
 pub mod vga_buffer;
+
+extern crate alloc;
 
 // Defines a type-checked entrypoint for our kernel
 #[cfg(test)]

@@ -1,4 +1,6 @@
-use core::fmt::{self, Write};
+use core::fmt;
+#[test_case]
+use core::fmt::Write;
 use lazy_static::lazy_static;
 use spin::Mutex;
 use volatile::Volatile;
