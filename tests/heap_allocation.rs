@@ -11,6 +11,7 @@ use bootloader::{BootInfo, entry_point};
 use core::panic::PanicInfo;
 use eli_os::{
     allocator::{self, HEAP_SIZE},
+    halt_loop,
     memory::{self, BootInfoFrameAllocator},
 };
 use x86_64::VirtAddr;
@@ -27,7 +28,7 @@ fn main(boot_info: &'static BootInfo) -> ! {
     allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
 
     test_main();
-    loop {}
+    halt_loop()
 }
 
 #[panic_handler]
@@ -62,4 +63,14 @@ fn many_boxes() {
         let x = Box::new(i);
         assert_eq!(*x, i);
     }
+}
+
+#[test_case]
+fn many_boxes_long_lived() {
+    let long_lived = Box::new(1);
+    for i in 0..HEAP_SIZE {
+        let x = Box::new(i);
+        assert_eq!(*x, i);
+    }
+    assert_eq!(*long_lived, 1);
 }
